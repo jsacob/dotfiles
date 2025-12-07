@@ -1,0 +1,72 @@
+snippet main "main basic"
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main() {
+    ${0}
+    return 0;
+}
+endsnippet
+
+snippet lc "competitive code"
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    ${1}
+    return 0;
+}
+endsnippet
+
+snippet fori "for index loop"
+for (int i = 0; i < ${1}; i++) {
+    ${0}
+}
+endsnippet
+
+snippet cls "class boilerplate"
+class ${1:ClassName} {
+private:
+
+public:
+    ${1:ClassName}(){
+
+    }
+
+};
+endsnippet
+
+snippet mraw "malloc buffer"
+size_t size = ${1};
+void* buffer = malloc(size);
+if (!buffer) {
+    cerr << "Memory allocation failed" << endl;
+}
+${0}
+free(buffer);
+endsnippet
+
+snippet iptr "int pointer demo"
+int value = ${1};
+int* ptr = &value;
+cout << "Value: " << value << "\n";
+cout << "Pointer addr: " << ptr << "\n";
+cout << "Through ptr: " << *ptr << "\n";
+${0}
+endsnippet
+
+snippet place "placement new example"
+#include <new>
+char buffer[sizeof(${1:Type})];
+${1}* obj = new (buffer) ${1}(${2});
+${0}
+obj->~${1}();
+endsnippet
+
+snippet qfun "quick function"
+void ${1:tempFunc}(${2}){
+
+}
+endsnippet
+
