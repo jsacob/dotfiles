@@ -11,6 +11,17 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- Settings
+    vim.opt.expandtab = true
+    vim.opt.clipboard="unnamedplus"
+    vim.opt.tabstop=4
+    vim.opt.softtabstop=4
+    vim.opt.shiftwidth=4
+
+    vim.opt.number=true
+    vim.opt.relativenumber=true
+    vim.opt.termguicolors=true
+
 -- Plugins
 require("lazy").setup({
     { "folke/tokyonight.nvim" },
@@ -22,7 +33,7 @@ require("lazy").setup({
     { "L3MON4D3/LuaSnip"}
 })
 
-require("lsp")
+pcall(require, "lsp")
 
 -- Theme
 require("tokyonight").setup({
