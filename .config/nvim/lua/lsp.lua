@@ -10,12 +10,20 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 local servers = { "lua_ls", "pyright", "clangd", "ts_ls" }
 
-for _, server in ipairs(servers) do
-  lspconfig[server].setup({
-    capabilities = capabilities,
-  })
-end
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local servers = { "lua_ls", "pyright", "clangd", "ts_ls" }
 
+for _, server in ipairs(servers) do
+    -- This is the Neovim 0.11+ way that stops the warning
+    vim.lsp.config(server, {
+        install = {
+             -- This helps Mason and the native config play nice
+             package = server 
+        },
+        capabilities = capabilities,
+    })
+    vim.lsp.enable(server)
+end
 -- LuaSnip + prebuilt snippets
 local luasnip = require("luasnip")
 require("luasnip.loaders.from_vscode").lazy_load() -- loads friendly-snippets
@@ -54,6 +62,7 @@ cmp.setup({
 
   sources = {
     { name = "nvim_lsp" },
+    { name = "nvim_lsp_signature_help" },
     { name = "luasnip" },
   },
 })
