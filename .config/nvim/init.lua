@@ -31,9 +31,11 @@ require("lazy").setup({
     { "hrsh7th/nvim-cmp" },
     { "hrsh7th/cmp-nvim-lsp"},
     { "hrsh7th/cmp-nvim-lsp-signature-help" },
-    { "L3MON4D3/LuaSnip"}
+    { "L3MON4D3/LuaSnip"},
+    { "nvim-telescope/telescope.nvim" },
 })
 
+-- Lsp call and such 
 pcall(require, "lsp")
 
 -- Theme
@@ -53,4 +55,15 @@ local key = vim.keymap.set
 key('n', '<leader>w', ':write<CR>')
 key('n', '<leader>q', ':quit<CR>')
 key('n', '<leader>`', ':terminal<CR>')
+key('n', '<leader>so', ':source<CR>')
+-- Telescope 
+
+local builtin = require('telescope.builtin')
+key('n', '<leader>ff', builtin.find_files, { desc = 'Telescope switch buffers' })
+key('n', '<leader>lg', builtin.live_grep, { desc = 'Telescope live grep' })
+key('n', '<leader>gc', builtin.git_commits, { desc = 'Telescope git commits' })
+key('n', '<leader>jl', builtin.jumplist, { desc = 'jumping to prev folders and such' })
+key('n', '<leader>h', builtin.help_tags, { desc = 'help files' })
+
+
 
