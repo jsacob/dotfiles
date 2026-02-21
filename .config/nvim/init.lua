@@ -1,3 +1,5 @@
+vim.env.PATH = "/opt/homebrew/bin:" .. vim.env.PATH
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -24,6 +26,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Plugins
 require("lazy").setup({
+    { "loctvl842/monokai-pro.nvim" },
     { "folke/tokyonight.nvim" },
     { "mason-org/mason.nvim" },
     { "mason-org/mason-lspconfig.nvim" },
@@ -33,12 +36,13 @@ require("lazy").setup({
     { "hrsh7th/cmp-nvim-lsp-signature-help" },
     { "L3MON4D3/LuaSnip"},
     { "nvim-telescope/telescope.nvim" },
+    { "andweeb/presence.nvim" },
 })
 
 -- Lsp call and such 
 pcall(require, "lsp")
+require("presence").setup()
 
--- Theme
 require("tokyonight").setup({
     transparent = true,
     styles = {
@@ -46,6 +50,7 @@ require("tokyonight").setup({
 	floats = "transparent"
 	},
 })
+
 vim.cmd("colorscheme tokyonight")
 
 -- Keybinds
@@ -56,14 +61,14 @@ key('n', '<leader>w', ':write<CR>')
 key('n', '<leader>q', ':quit<CR>')
 key('n', '<leader>`', ':terminal<CR>')
 key('n', '<leader>so', ':source<CR>')
--- Telescope 
+key('n', 'K', vim.lsp.buf.hover, { desc = "LSP Hover Information" })
 
+-- Telescope 
 local builtin = require('telescope.builtin')
 key('n', '<leader>ff', builtin.find_files, { desc = 'Telescope switch buffers' })
 key('n', '<leader>lg', builtin.live_grep, { desc = 'Telescope live grep' })
 key('n', '<leader>gc', builtin.git_commits, { desc = 'Telescope git commits' })
 key('n', '<leader>jl', builtin.jumplist, { desc = 'jumping to prev folders and such' })
 key('n', '<leader>h', builtin.help_tags, { desc = 'help files' })
-
 
 

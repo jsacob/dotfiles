@@ -2,13 +2,11 @@
 require("mason").setup()
 require("mason-lspconfig").setup({
   ensure_installed = { "lua_ls", "pyright", "clangd", "ts_ls" },
+  highlight = {
+      enable = true,
+  };
 })
 
--- LSP
-local lspconfig = require("lspconfig")
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-local servers = { "lua_ls", "pyright", "clangd", "ts_ls" }
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 local servers = { "lua_ls", "pyright", "clangd", "ts_ls" }
@@ -18,7 +16,7 @@ for _, server in ipairs(servers) do
     vim.lsp.config(server, {
         install = {
              -- This helps Mason and the native config play nice
-             package = server 
+             package = server
         },
         capabilities = capabilities,
     })
@@ -37,7 +35,7 @@ cmp.setup({
     end,
   },
 
-  mapping = cmp.mapping.preset.insert({
+    mapping = cmp.mapping.preset.insert({
     ["<C-Space>"] = cmp.mapping.complete(),
     ["<CR>"] = cmp.mapping.confirm({ select = true }),
     ["<Tab>"] = cmp.mapping(function(fallback)
@@ -59,6 +57,10 @@ cmp.setup({
       end
     end, { "i", "s" }),
   }),
+
+  vim.diagnostic.config({
+    virtual_text = true,
+  });
 
   sources = {
     { name = "nvim_lsp" },
