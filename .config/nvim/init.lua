@@ -114,6 +114,9 @@ require("lazy").setup({
   -- Telescope
   { "nvim-telescope/telescope.nvim" },
 
+  -- terminal
+  {'akinsho/toggleterm.nvim', version = "*", config = true}
+
 })
 
 -- =========================
@@ -143,3 +146,6 @@ key('n', '<leader>h', builtin.help_tags, { desc = 'Help tags' })
 
 -- File tree toggle
 key('n', '<leader>b', ':NvimTreeToggle<CR>')
+
+-- Term
+key('n', '<leader>t', ':ToggleTerm<CR>')
