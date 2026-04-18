@@ -1,5 +1,6 @@
 vim.env.PATH = "/opt/homebrew/bin:" .. vim.env.PATH
 
+-- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -13,62 +14,114 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Settings
-    vim.opt.expandtab = true
-    vim.opt.clipboard="unnamedplus"
-    vim.opt.tabstop=4
-    vim.opt.softtabstop=4
-    vim.opt.shiftwidth=4
+-- =========================
+-- General Settings
+-- =========================
+vim.opt.expandtab = true
+vim.opt.clipboard = "unnamedplus"
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
 
-    vim.opt.number=true
-    vim.opt.relativenumber=true
-    vim.opt.termguicolors=true
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.termguicolors = true
 
--- Plugins
-require("lazy").setup({
-    { "loctvl842/monokai-pro.nvim" },
-    { "folke/tokyonight.nvim" },
-    { "mason-org/mason.nvim" },
-    { "mason-org/mason-lspconfig.nvim" },
-    { "neovim/nvim-lspconfig" },
-    { "hrsh7th/nvim-cmp" },
-    { "hrsh7th/cmp-nvim-lsp"},
-    { "hrsh7th/cmp-nvim-lsp-signature-help" },
-    { "L3MON4D3/LuaSnip"},
-    { "nvim-telescope/telescope.nvim" },
-    { "andweeb/presence.nvim" },
-})
+-- Nice UI improvements
+vim.opt.cursorline = true
+vim.opt.signcolumn = "yes"
 
--- Lsp call and such 
-pcall(require, "lsp")
-require("presence").setup()
-
-require("tokyonight").setup({
-    transparent = true,
-    styles = {
-        sidebars = "transparent",
-	floats = "transparent"
-	},
-})
-
-vim.cmd("colorscheme tokyonight")
-
--- Keybinds
+-- Leader key
 vim.g.mapleader = " "
 
+-- =========================
+-- Plugins
+-- =========================
+require("lazy").setup({
+
+  -- Theme
+  {
+    "loctvl842/monokai-pro.nvim",
+    priority = 1000,
+    config = function()
+      vim.cmd("colorscheme tokyonight-storm")
+    end,
+  },
+
+  -- Alternative theme (optional)
+  { "folke/tokyonight.nvim" },
+
+  -- File Tree
+  {
+    "nvim-tree/nvim-tree.lua",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require("nvim-tree").setup()
+    end,
+  },
+
+  -- Discord Presence
+  {
+    "andweeb/presence.nvim",
+    config = function()
+      require("presence").setup()
+    end,
+  },
+
+  -- TreeSitter
+  {
+  "nvim-treesitter/nvim-treesitter",
+  branch = "master", -- Use the legacy branch
+  build = ":TSUpdate",
+  config = function()
+    require("nvim-treesitter.configs").setup({
+      highlight = { enable = true },
+      -- ... your other old config
+    })
+  end,
+},
+
+
+  -- LSP
+  { "mason-org/mason.nvim" },
+  { "mason-org/mason-lspconfig.nvim" },
+  { "neovim/nvim-lspconfig" },
+
+  -- Autocomplete
+  { "hrsh7th/nvim-cmp" },
+  { "hrsh7th/cmp-nvim-lsp" },
+  { "hrsh7th/cmp-nvim-lsp-signature-help" },
+  { "L3MON4D3/LuaSnip" },
+
+  -- Telescope
+  { "nvim-telescope/telescope.nvim" },
+
+})
+
+-- =========================
+-- External Configs
+-- =========================
+pcall(require, "lsp")
+
+-- =========================
+-- Keybinds
+-- =========================
 local key = vim.keymap.set
+
 key('n', '<leader>w', ':write<CR>')
 key('n', '<leader>q', ':quit<CR>')
 key('n', '<leader>`', ':terminal<CR>')
 key('n', '<leader>so', ':source<CR>')
+
 key('n', 'K', vim.lsp.buf.hover, { desc = "LSP Hover Information" })
 
--- Telescope 
+-- Telescope
 local builtin = require('telescope.builtin')
-key('n', '<leader>ff', builtin.find_files, { desc = 'Telescope switch buffers' })
-key('n', '<leader>lg', builtin.live_grep, { desc = 'Telescope live grep' })
-key('n', '<leader>gc', builtin.git_commits, { desc = 'Telescope git commits' })
-key('n', '<leader>jl', builtin.jumplist, { desc = 'jumping to prev folders and such' })
-key('n', '<leader>h', builtin.help_tags, { desc = 'help files' })
+key('n', '<leader><CR>', ":Telescope<CR>", { desc = 'Telescope' })
+key('n', '<leader>ff', builtin.find_files, { desc = 'Find files' })
+key('n', '<leader>lg', builtin.live_grep, { desc = 'Live grep' })
+key('n', '<leader>jl', builtin.jumplist, { desc = 'Jumplist' })
+key('n', '<leader>h', builtin.help_tags, { desc = 'Help tags' })
 
-
+-- File tree toggle
+key('n', '<leader>b', ':NvimTreeToggle<CR>')
